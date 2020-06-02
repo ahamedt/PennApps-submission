@@ -1,0 +1,17 @@
+{% extends "Blog/base.html" %}
+{% block content %}
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.caption }}</a></h2>
+            {% if post.pic %}
+            <img class="img-fluid" src="{{ post.pic.url}}" width="400" height ="500">
+            {% endif %}
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
