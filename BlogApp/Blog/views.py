@@ -4,6 +4,7 @@ from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def home(request):
@@ -14,7 +15,7 @@ def home(request):
 
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'Blog/home.html'
     context_object_name = 'posts'
@@ -52,7 +53,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
         if self.request.user == post.author:
             return True
         return False
-
+@login_required
 def likes_view(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     post.likes.add(request.user)
